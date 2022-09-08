@@ -7,17 +7,6 @@ import json
 import pickle
 
 
-def get_parser():
-    parser = argparse.ArgumentParser(description='Todo application')
-    parser.add_argument('-a', '--add', help='Add a new task', action='store_true')
-    parser.add_argument('-l', '--list', help='List all tasks', action='store_true')
-    parser.add_argument('-r', '--remove', help='Remove a task', action='store_true')
-    parser.add_argument('-c', '--complete', help='Complete a task', action='store_true')
-    parser.add_argument('-d', '--delete', help='Delete a task', action='store_true')
-    parser.add_argument('-s', '--show', help='Show a task', action='store_true')
-    return parser
-
-
 def add_task(todo_list):
     task = input('Enter task: ')
     todo_list.append(task)
@@ -33,6 +22,10 @@ def list_tasks(todo_list):
 def remove_task(todo_list):
     list_tasks(todo_list)
     task_number = int(input('Enter task number to remove: '))
+    # check if the task_number is exists
+    if task_number > len(todo_list):
+        print('Task number does not exists')
+        return
     todo_list.pop(task_number - 1)
     print('Task removed')
 
@@ -55,6 +48,15 @@ def show_task(todo_list):
     list_tasks(todo_list)
     task_number = int(input('Enter task number to show: '))
     print(todo_list[task_number - 1])
+    
+def get_parser():
+    parser = argparse.ArgumentParser(description='Todo application')
+    parser.add_argument('-a', '--add', help='Add a new task', action='store_true')
+    parser.add_argument('-l', '--list', help='List all tasks', action='store_true')
+    parser.add_argument('-r', '--remove', help='Remove a task', action='store_true')
+    parser.add_argument('-c', '--complete', help='Complete a task', action='store_true')
+    parser.add_argument('-s', '--show', help='Show a task', action='store_true')
+    return parser
 
 
 def main():
@@ -75,8 +77,6 @@ def main():
         remove_task(todo_list)
     elif args.complete:
         complete_task(todo_list)
-    elif args.delete:
-        delete_task(todo_list)
     elif args.show:
         show_task(todo_list)
     else:
